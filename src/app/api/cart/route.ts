@@ -4,7 +4,6 @@ import { createAdminClient } from "@/lib/supabase/server";
 
 const CART_COOKIE = "cart_token";
 const CART_MAX_AGE = 30 * 24 * 60 * 60;
-type DB = ReturnType<typeof createAdminClient>;
 
 function getToken(cookieValue: string | undefined): string {
   return cookieValue || crypto.randomUUID();
@@ -20,9 +19,8 @@ function setCookie(response: NextResponse, token: string) {
   });
 }
 
-async function getOrCreateSession(supabase: DB, token: string) {
-  const { data: rows }: any = await supabase
-    .from("cart_sessions")
+async function getOrCreateSession(supabase: ReturnType<typeof createAdminClient>, token: string) {
+  const { data: rows } = await (supabase.from("cart_sessions") as any)
     .select("*")
     .eq("cookie_token", token);
 
@@ -37,8 +35,7 @@ async function getOrCreateSession(supabase: DB, token: string) {
     return existing.id;
   }
 
-  const { data: created }: any = await supabase
-    .from("cart_sessions")
+  const { data: created } = await (supabase.from("cart_sessions") as any)
     .insert({ cookie_token: token })
     .select("id")
     .single();
@@ -48,8 +45,7 @@ async function getOrCreateSession(supabase: DB, token: string) {
 }
 
 async function getVariantsMap(supabase: ReturnType<typeof createAdminClient>) {
-  const { data }: any = await supabase
-    .from("product_variants")
+  const { data } = await (supabase.from("product_variants") as any)
     .select("*, product:products(*, product_images(*))");
 
   const map = new Map<string, any>();
@@ -70,8 +66,7 @@ export async function GET() {
     const supabase = createAdminClient();
     const sessionId = await getOrCreateSession(supabase, token);
 
-    const { data: items }: any = await supabase
-      .from("cart_items")
+    const { data: items } = await (supabase.from("cart_items") as any)
       .select("*")
       .eq("cart_session_id", sessionId);
 
@@ -141,8 +136,7 @@ export async function POST(request: NextRequest) {
     const qty = Math.max(1, Math.floor(quantity));
     const supabase = createAdminClient();
 
-    const { data: variant }: any = await supabase
-      .from("product_variants")
+    const { data: variant } = await (supabase.from("product_variants") as any)
       .select("stock_quantity, price_override, product:products!inner(status)")
       .eq("id", variant_id)
       .single();
@@ -170,8 +164,7 @@ export async function POST(request: NextRequest) {
     const token = getToken(existingToken);
     const sessionId = await getOrCreateSession(supabase, token);
 
-    const { data: existing }: any = await supabase
-      .from("cart_items")
+    const { data: existing } = await (supabase.from("cart_items") as any)
       .select("id, quantity")
       .eq("cart_session_id", sessionId)
       .eq("product_variant_id", variant_id);
@@ -193,16 +186,14 @@ export async function POST(request: NextRequest) {
         );
       }
 
-      const { data: updated }: any = await supabase
-        .from("cart_items")
+      const { data: updated } = await (supabase.from("cart_items") as any)
         .update({ quantity: newQty })
         .eq("id", existingItem.id)
         .select("id, quantity")
         .single();
       result = updated;
     } else {
-      const { data: created }: any = await supabase
-        .from("cart_items")
+      const { data: created } = await (supabase.from("cart_items") as any)
         .insert({
           cart_session_id: sessionId,
           product_variant_id: variant_id,
@@ -240,8 +231,7 @@ export async function PATCH(request: NextRequest) {
     const qty = Math.max(1, Math.floor(quantity));
     const supabase = createAdminClient();
 
-    const { data: rows }: any = await supabase
-      .from("cart_items")
+    const { data: rows } = await (supabase.from("cart_items") as any)
       .select("id, product_variant_id")
       .eq("id", item_id);
 
@@ -251,8 +241,7 @@ export async function PATCH(request: NextRequest) {
       return NextResponse.json({ error: "Cart item not found" }, { status: 404 });
     }
 
-    const { data: variant }: any = await supabase
-      .from("product_variants")
+    const { data: variant } = await (supabase.from("product_variants") as any)
       .select("stock_quantity")
       .eq("id", item.product_variant_id)
       .single();
@@ -271,8 +260,7 @@ export async function PATCH(request: NextRequest) {
       );
     }
 
-    const { data: updated }: any = await supabase
-      .from("cart_items")
+    const { data: updated } = await (supabase.from("cart_items") as any)
       .update({ quantity: qty })
       .eq("id", item_id)
       .select("id, quantity")
@@ -297,8 +285,7 @@ export async function DELETE(request: NextRequest) {
       return NextResponse.json({ message: "Cart is empty" });
     }
 
-    const { data: rows }: any = await supabase
-      .from("cart_sessions")
+    const { data: rows } = await (supabase.from("cart_sessions") as any)
       .select("id")
       .eq("cookie_token", token);
 
@@ -309,8 +296,7 @@ export async function DELETE(request: NextRequest) {
     }
 
     if (itemId) {
-      const { error } = await supabase
-        .from("cart_items")
+      const { error } = await (supabase.from("cart_items") as any)
         .delete()
         .eq("id", itemId)
         .eq("cart_session_id", session.id);
@@ -322,7 +308,7 @@ export async function DELETE(request: NextRequest) {
       return NextResponse.json({ message: "Item removed" });
     }
 
-    await supabase.from("cart_items").delete().eq("cart_session_id", session.id);
+    await (supabase.from("cart_items") as any).delete().eq("cart_session_id", session.id);
 
     return NextResponse.json({ message: "Cart cleared" });
   } catch {
