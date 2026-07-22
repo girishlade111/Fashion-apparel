@@ -15,15 +15,6 @@ type Variant = {
   inStock: boolean;
 };
 
-type Review = {
-  id: string;
-  reviewer_name: string;
-  rating: number;
-  title: string;
-  body: string;
-  created_at: string;
-};
-
 type Product = {
   id: string;
   name: string;
@@ -34,7 +25,7 @@ type Product = {
   images: { id: string; url: string; alt_text: string | null }[];
   variants: Variant[];
   inStock: boolean;
-  reviews: { items: Review[]; average_rating: number | null; count: number };
+  reviews: { items: { id: string; reviewer_name: string; rating: number; title: string; body: string; created_at: string }[]; average_rating: number | null; count: number };
   related_products: { id: string; name: string; slug: string; base_price: number; compare_at_price: number | null }[];
 };
 
