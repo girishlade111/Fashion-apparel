@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { useCart } from "@/lib/cart-context";
+import SearchOverlay from "./SearchOverlay";
 
 type Category = {
   name: string;
