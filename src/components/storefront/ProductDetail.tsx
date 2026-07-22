@@ -5,6 +5,7 @@ import Link from "next/link";
 import ImageGallery from "./ImageGallery";
 import ProductReviews from "./ProductReviews";
 import { useCart } from "@/lib/cart-context";
+import { useWishlist } from "@/lib/wishlist-context";
 
 type Variant = {
   id: string;
