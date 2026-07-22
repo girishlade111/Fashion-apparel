@@ -245,13 +245,6 @@ export default async function Home() {
           </div>
         </section>
       </main>
-
-      <footer className="bg-neutral-950 text-white/40 text-sm">
-        <div className="px-6 py-12 max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="font-heading text-white/60 text-base tracking-wide">Fashion Apparel</p>
-          <p>&copy; {new Date().getFullYear()} Fashion Apparel. All rights reserved.</p>
-        </div>
-      </footer>
     </>
   );
 }
