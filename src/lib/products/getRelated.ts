@@ -41,7 +41,7 @@ export async function getRelated(
     return [];
   }
 
-  const { data: related } = await (supabase
+  let query = supabase
     .from("products")
     .select(`
       id, name, slug, base_price, compare_at_price,
@@ -49,9 +49,13 @@ export async function getRelated(
       product_variants(stock_quantity)
     `)
     .in("category_id", categoryIds)
-    .eq("status", "active")
-    .not("id", "in", `(${allExcludeIds.map((id) => `"${id}"`).join(",")})`)
-    .order("created_at", { ascending: false }) as any);
+    .eq("status", "active") as any;
+
+  if (allExcludeIds.length > 0) {
+    query = query.not("id", "in", `(${allExcludeIds.map((id) => `"${id}"`).join(",")})`);
+  }
+
+  const { data: related } = await query.order("created_at", { ascending: false });
 
   if (!related || (related as any[]).length === 0) {
     return [];
