@@ -41,7 +41,7 @@ export async function getRelated(
     return [];
   }
 
-  const { data: related } = await supabase
+  const { data: related } = await (supabase
     .from("products")
     .select(`
       id, name, slug, base_price, compare_at_price,
@@ -51,7 +51,7 @@ export async function getRelated(
     .in("category_id", categoryIds)
     .eq("status", "active")
     .not("id", "in", `(${allExcludeIds.map((id) => `"${id}"`).join(",")})`)
-    .order("created_at", { ascending: false });
+    .order("created_at", { ascending: false }) as any);
 
   if (!related || related.length === 0) {
     return [];
