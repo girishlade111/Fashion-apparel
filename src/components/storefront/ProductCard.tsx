@@ -45,6 +45,13 @@ export default function ProductCard({ product }: { product: Product }) {
               No image
             </div>
           )}
+          {product.is_low_stock && product.in_stock && (
+            <div className="absolute top-3 left-3">
+              <span className="bg-amber-500 text-white text-xs font-medium px-2 py-1 rounded-md">
+                Only {product.total_stock} left
+              </span>
+            </div>
+          )}
           {!product.in_stock && (
             <div className="absolute inset-0 bg-white/50 flex items-center justify-center">
               <span className="bg-neutral-900 text-white text-xs font-medium px-3 py-1.5 rounded-full">
