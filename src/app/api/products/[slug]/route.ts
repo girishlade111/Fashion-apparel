@@ -44,26 +44,26 @@ export async function GET(
       await Promise.all([
         supabase
           .from("product_images")
-          .select("url, alt_text, sort_order")
+          .select("*")
           .eq("product_id", product.id)
           .order("sort_order", { ascending: true }),
 
         supabase
           .from("product_variants")
-          .select("id, size, color, sku, stock_quantity, price_override")
+          .select("*")
           .eq("product_id", product.id)
           .order("size", { ascending: true }),
 
         supabase
           .from("reviews")
-          .select("id, reviewer_name, rating, title, body, created_at")
+          .select("*")
           .eq("product_id", product.id)
           .eq("status", "approved")
           .order("created_at", { ascending: false }),
 
         supabase
           .from("products")
-          .select("id, name, slug, base_price, compare_at_price, created_at")
+          .select("*")
           .eq("category_id", product.category_id)
           .eq("status", "active")
           .neq("id", product.id)
