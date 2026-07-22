@@ -2,6 +2,7 @@ import { createAdminClient } from "@/lib/supabase/server";
 import { getRelated } from "@/lib/products/getRelated";
 import ProductDetail from "@/components/storefront/ProductDetail";
 import { notFound } from "next/navigation";
+import { LOW_STOCK_THRESHOLD } from "@/lib/constants";
 
 type Params = Promise<{ slug: string }>;
 
