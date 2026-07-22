@@ -87,7 +87,7 @@ export default async function ProductPage({ params }: { params: Params }) {
     ? Math.round((reviews.reduce((s: number, r: any) => s + r.rating, 0) / reviews.length) * 10) / 10
     : null;
 
-  const mainImage = imagesResult.data?.[0] || null;
+  const mainImage = (imagesResult.data as any[])?.[0] || null;
   const inStock = variants.some((v: any) => v.inStock);
 
   const productJson = productJsonLd({
