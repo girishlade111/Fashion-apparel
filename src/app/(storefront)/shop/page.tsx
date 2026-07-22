@@ -1,5 +1,24 @@
+import type { Metadata } from "next";
 import { createAdminClient } from "@/lib/supabase/server";
 import ShopContent from "@/components/storefront/ShopContent";
+import { truncate, SITE_NAME } from "@/lib/seo";
+
+export async function generateMetadata({
+  searchParams,
+}: {
+  searchParams: Record<string, string | string[] | undefined>;
+}): Promise<Metadata> {
+  const category = searchParams.category;
+  const categoryLabel = category ? ` ${String(category)}` : "";
+  const title = `Shop${categoryLabel}`;
+  return {
+    title,
+    description: truncate(
+      `Browse our${categoryLabel} collection of premium fashion apparel. Discover timeless pieces crafted for quality and style.`,
+    ),
+    openGraph: { title: `${title} | ${SITE_NAME}`, description: `Browse our${categoryLabel} collection of premium fashion apparel.` },
+  };
+}
 
 async function getFilterMeta() {
   const supabase = createAdminClient();

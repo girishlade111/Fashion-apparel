@@ -1,6 +1,17 @@
 import Image from "next/image";
 import Link from "next/link";
+import type { Metadata } from "next";
 import { createAdminClient } from "@/lib/supabase/server";
+import { SITE_NAME, SITE_DESCRIPTION, organizationJsonLd } from "@/lib/seo";
+
+export const metadata: Metadata = {
+  title: SITE_NAME,
+  description: SITE_DESCRIPTION,
+  openGraph: {
+    title: SITE_NAME,
+    description: SITE_DESCRIPTION,
+  },
+};
 
 async function getData() {
   const supabase = createAdminClient();
@@ -42,8 +53,14 @@ async function getData() {
 export default async function Home() {
   const { categories, products } = await getData();
 
+  const jsonLd = organizationJsonLd();
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <main>
         <section className="relative h-[calc(100vh-4rem)] w-full overflow-hidden bg-black">
           <Image

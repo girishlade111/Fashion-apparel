@@ -1,8 +1,35 @@
+import type { Metadata } from "next";
 import { createAdminClient } from "@/lib/supabase/server";
 import { getRelated } from "@/lib/products/getRelated";
 import ProductDetail from "@/components/storefront/ProductDetail";
 import { notFound } from "next/navigation";
 import { LOW_STOCK_THRESHOLD } from "@/lib/constants";
+import { truncate, SITE_URL, productJsonLd, breadcrumbJsonLd } from "@/lib/seo";
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  const supabase = createAdminClient();
+  const { data: product } = await (supabase.from("products") as any)
+    .select("name, description, seo_title, seo_description")
+    .eq("slug", slug)
+    .eq("status", "active")
+    .single();
+
+  if (!product) return {};
+
+  const title = product.seo_title || product.name;
+  const description = truncate(product.seo_description || product.description, 160);
+
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      type: "og:product",
+    },
+  };
+}
 
 type Params = Promise<{ slug: string }>;
 
