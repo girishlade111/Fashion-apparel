@@ -313,31 +313,12 @@ export default function ProductDetail({ product: initial }: { product: Product }
 
       {/* Reviews */}
       <div className="mt-16 max-w-2xl">
-        <h2 className="font-heading text-xl text-neutral-900 mb-6">
-          Reviews{initial.reviews.count > 0 ? ` (${initial.reviews.count})` : ""}
-        </h2>
-
-        {initial.reviews.count > 0 ? (
-          <div className="space-y-6">
-            {initial.reviews.items.map((r) => (
-              <div key={r.id} className="pb-6 border-b border-neutral-100">
-                <div className="flex items-center gap-2 mb-1">
-                  <Stars rating={r.rating} />
-                  <span className="text-xs text-neutral-400">
-                    {new Date(r.created_at).toLocaleDateString("en-IN", { year: "numeric", month: "short", day: "numeric" })}
-                  </span>
-                </div>
-                {r.title && <p className="text-sm font-medium text-neutral-900">{r.title}</p>}
-                <p className="text-sm text-neutral-600 mt-1">{r.body}</p>
-                <p className="text-xs text-neutral-400 mt-1">– {r.reviewer_name}</p>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <p className="text-sm text-neutral-400">No reviews yet.</p>
-        )}
-
-        <ReviewForm productId={initial.id} onSubmitted={() => {}} />
+        <ProductReviews
+          productId={initial.id}
+          initialAverage={initial.reviews.average_rating}
+          initialCount={initial.reviews.count}
+          initialReviews={initial.reviews.items}
+        />
       </div>
 
       {/* Related Products */}
