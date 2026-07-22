@@ -199,13 +199,12 @@ export default function Navbar({ categories }: { categories: Category[] }) {
             >
               Journal
             </Link>
-            <Link
-              href="/cart"
-              className="block py-3 text-lg text-neutral-700 hover:text-neutral-900 border-b border-neutral-100"
-              onClick={() => setMobileOpen(false)}
+            <button
+              onClick={() => { setMobileOpen(false); openDrawer(); }}
+              className="block w-full text-left py-3 text-lg text-neutral-700 hover:text-neutral-900 border-b border-neutral-100"
             >
               Cart {itemCount > 0 && `(${itemCount})`}
-            </Link>
+            </button>
           </nav>
         </div>
       )}
