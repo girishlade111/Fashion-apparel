@@ -11,12 +11,7 @@ export async function GET(
 
     const { data: product, error } = await supabase
       .from("products")
-      .select(
-        `
-        *,
-        category:categories(name, slug)
-      `,
-      )
+      .select("id, name, slug, description, base_price, compare_at_price, category_id, category:categories(name, slug)")
       .eq("slug", slug)
       .eq("status", "active")
       .single();
