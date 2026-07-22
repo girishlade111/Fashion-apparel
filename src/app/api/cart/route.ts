@@ -126,15 +126,25 @@ export async function GET() {
 
 export async function POST(request: NextRequest) {
   try {
+    const supabase = createAdminClient();
     const body = await request.json();
-    const { variant_id, quantity = 1 } = body;
+    let { variant_id, product_id, quantity = 1 } = body;
+
+    if (!variant_id && product_id) {
+      const { data: firstVariant } = await (supabase.from("product_variants") as any)
+        .select("id")
+        .eq("product_id", product_id)
+        .order("size", { ascending: true })
+        .limit(1)
+        .maybeSingle();
+      if (firstVariant) variant_id = firstVariant.id;
+    }
 
     if (!variant_id) {
-      return NextResponse.json({ error: "variant_id is required" }, { status: 400 });
+      return NextResponse.json({ error: "variant_id (or product_id) is required" }, { status: 400 });
     }
 
     const qty = Math.max(1, Math.floor(quantity));
-    const supabase = createAdminClient();
 
     const { data: variant } = await (supabase.from("product_variants") as any)
       .select("stock_quantity, price_override, product:products!inner(status)")
