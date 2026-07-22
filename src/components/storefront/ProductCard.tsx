@@ -17,6 +17,7 @@ type Product = {
 
 export default function ProductCard({ product }: { product: Product }) {
   const { refreshCart } = useCart();
+  const { toggleWishlist, isWishlisted } = useWishlist();
 
   async function handleAddToCart() {
     const res = await fetch("/api/cart", {
@@ -51,6 +52,16 @@ export default function ProductCard({ product }: { product: Product }) {
           )}
         </div>
       </Link>
+
+      <button
+        onClick={(e) => { e.preventDefault(); toggleWishlist(product.id); }}
+        className="absolute top-3 right-3 w-8 h-8 bg-white/80 backdrop-blur-sm rounded-full flex items-center justify-center shadow-sm hover:bg-white transition-colors z-10"
+        aria-label={isWishlisted(product.id) ? "Remove from wishlist" : "Add to wishlist"}
+      >
+        <svg width="14" height="14" viewBox="0 0 24 24" fill={isWishlisted(product.id) ? "currentColor" : "none"} stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={isWishlisted(product.id) ? "text-red-500" : "text-neutral-700"}>
+          <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
+        </svg>
+      </button>
 
       <div className="mt-3 flex items-start justify-between gap-2">
         <div>
