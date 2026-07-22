@@ -45,24 +45,6 @@ export default function CartPage() {
   const shipping = subtotal >= 500 ? 0 : 99;
   const total = Math.max(0, subtotal - discountAmount + shipping);
 
-  async function handleCheckout() {
-    const res = await fetch("/api/checkout", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        discount_code: discount?.code || null,
-      }),
-    });
-
-    if (res.ok) {
-      const data = await res.json();
-      window.location.href = data.url;
-    } else {
-      const err = await res.json();
-      alert(err.error || "Checkout failed");
-    }
-  }
-
   return (
     <div className="max-w-3xl mx-auto px-6 py-12">
       <h1 className="font-heading text-2xl text-neutral-900">Cart</h1>
