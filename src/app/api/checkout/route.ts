@@ -46,18 +46,20 @@ export async function POST(request: NextRequest) {
 
     const supabase = createAdminClient();
 
-    const { data: session } = await (supabase.from("cart_sessions") as any)
+    const sessionResult = await (supabase.from("cart_sessions") as any)
       .select("id")
       .eq("cookie_token", token)
       .single();
+    const session: { id: string } | null = sessionResult.data;
 
     if (!session) {
       return NextResponse.json({ error: "Cart is empty" }, { status: 400 });
     }
 
-    const { data: cartItems } = await (supabase.from("cart_items") as any)
+    const itemsResult = await (supabase.from("cart_items") as any)
       .select("id, product_variant_id, quantity")
       .eq("cart_session_id", session.id);
+    const cartItems: any[] = itemsResult.data || [];
 
     if (!cartItems || cartItems.length === 0) {
       return NextResponse.json({ error: "Cart is empty" }, { status: 400 });
