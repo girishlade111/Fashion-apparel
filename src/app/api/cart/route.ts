@@ -4,6 +4,7 @@ import { createAdminClient } from "@/lib/supabase/server";
 
 const CART_COOKIE = "cart_token";
 const CART_MAX_AGE = 30 * 24 * 60 * 60;
+type DB = ReturnType<typeof createAdminClient>;
 
 function getToken(cookieValue: string | undefined): string {
   return cookieValue || crypto.randomUUID();
@@ -19,7 +20,7 @@ function setCookie(response: NextResponse, token: string) {
   });
 }
 
-async function getOrCreateSession(supabase: ReturnType<typeof createAdminClient>, token: string) {
+async function getOrCreateSession(supabase: DB, token: string) {
   const { data: rows }: any = await supabase
     .from("cart_sessions")
     .select("*")
@@ -29,9 +30,8 @@ async function getOrCreateSession(supabase: ReturnType<typeof createAdminClient>
 
   if (existing) {
     if (Date.now() - new Date(existing.last_active_at).getTime() > 60_000) {
-      await supabase
-        .from("cart_sessions")
-        .update({ last_active_at: new Date().toISOString() } as any)
+      await (supabase.from("cart_sessions") as any)
+        .update({ last_active_at: new Date().toISOString() })
         .eq("id", existing.id);
     }
     return existing.id;
