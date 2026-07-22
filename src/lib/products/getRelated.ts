@@ -24,14 +24,14 @@ export async function getRelated(
   let categoryIds = explicitCategoryIds || [];
 
   if (productId && categoryIds.length === 0) {
-    const { data: product } = await supabase
+    const { data: product } = await (supabase
       .from("products")
       .select("category_id")
       .eq("id", productId)
-      .single();
+      .single() as any);
 
     if (product) {
-      categoryIds = [product.category_id as string];
+      categoryIds = [product.category_id];
     }
   }
 
