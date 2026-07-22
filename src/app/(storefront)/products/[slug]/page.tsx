@@ -56,8 +56,7 @@ export default async function ProductPage({ params }: { params: Params }) {
     created_at: string;
   };
 
-  const { data: category } = await supabase
-    .from("categories")
+  const { data: category } = await (supabase.from("categories") as any)
     .select("name, slug")
     .eq("id", product.category_id)
     .single();
