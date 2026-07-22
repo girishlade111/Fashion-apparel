@@ -13,6 +13,8 @@ type Product = {
   primary_image: { url: string; alt_text: string | null } | null;
   price_range: { min: number; max: number };
   in_stock: boolean;
+  total_stock?: number;
+  is_low_stock?: boolean;
 };
 
 type FilterMeta = {
