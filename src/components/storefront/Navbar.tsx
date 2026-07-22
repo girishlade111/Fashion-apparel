@@ -16,7 +16,7 @@ export default function Navbar({ categories }: { categories: Category[] }) {
   const [openMega, setOpenMega] = useState<string | null>(null);
   const menuRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
-  const { itemCount } = useCart();
+  const { itemCount, openDrawer } = useCart();
 
   const closeMega = useCallback(() => setOpenMega(null), []);
 
