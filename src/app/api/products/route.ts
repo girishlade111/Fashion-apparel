@@ -86,6 +86,11 @@ export async function GET(request: NextRequest) {
       );
     }
 
+    if (ids) {
+      const idSet = new Set(ids.split(",").map((s) => s.trim()));
+      result = result.filter((p: any) => idSet.has(p.id));
+    }
+
     if (size) {
       result = result.filter((p: any) =>
         (products as any[])
