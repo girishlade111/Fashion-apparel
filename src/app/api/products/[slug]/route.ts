@@ -14,7 +14,17 @@ export async function GET(
       .select("id, name, slug, description, base_price, compare_at_price, category_id, category:categories(name, slug)")
       .eq("slug", slug)
       .eq("status", "active")
-      .single();
+      .single()
+      .overrideTypes<{
+        id: string;
+        name: string;
+        slug: string;
+        description: string | null;
+        base_price: number;
+        compare_at_price: number | null;
+        category_id: string;
+        category: { name: string; slug: string } | null;
+      }>();
 
     if (error || !product) {
       return NextResponse.json(
