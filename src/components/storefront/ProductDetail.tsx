@@ -186,7 +186,7 @@ export default function ProductDetail({ product: initial }: { product: Product }
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           product_id: initial.id,
-          variant_id: currentVariant?.id || null,
+          variant_id: currentVariant?.id || undefined,
           quantity,
         }),
       });
