@@ -170,7 +170,9 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Failed to create order items" }, { status: 500 });
     }
 
-    const auth = Buffer.from(`${env.RAZORPAY_KEY_ID}:${env.RAZORPAY_KEY_SECRET}`).toString("base64");
+    const razorpayKeyId = getServerEnvVar("RAZORPAY_KEY_ID");
+    const razorpayKeySecret = getServerEnvVar("RAZORPAY_KEY_SECRET");
+    const auth = Buffer.from(`${razorpayKeyId}:${razorpayKeySecret}`).toString("base64");
 
     let razorpayOrder: any;
     try {
@@ -222,7 +224,7 @@ export async function POST(request: NextRequest) {
       order_id: order.id,
       order_number: order.order_number,
       razorpay_order_id: razorpayOrder.id,
-      razorpay_key_id: env.RAZORPAY_KEY_ID,
+      razorpay_key_id: razorpayKeyId,
       amount: Math.round(total * 100),
       currency: "INR",
     });
