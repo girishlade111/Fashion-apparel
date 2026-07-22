@@ -1,5 +1,16 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import { createAdminClient } from "@/lib/supabase/server";
+import { truncate, SITE_NAME } from "@/lib/seo";
+
+export const metadata: Metadata = {
+  title: "Journal",
+  description: truncate("Style inspiration, trend reports, and behind-the-scenes stories from the Fashion Apparel atelier."),
+  openGraph: {
+    title: `Journal | ${SITE_NAME}`,
+    description: truncate("Style inspiration, trend reports, and behind-the-scenes stories from the Fashion Apparel atelier."),
+  },
+};
 
 async function getCategories() {
   const supabase = createAdminClient();

@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { createAdminClient } from "@/lib/supabase/server";
 import DOMPurify from "isomorphic-dompurify";
+import { SITE_URL, breadcrumbJsonLd } from "@/lib/seo";
 
 type tParams = Promise<{ slug: string }>;
 
@@ -81,8 +82,19 @@ export default async function BlogPostPage({ params }: { params: tParams }) {
 
   const sanitizedHtml = DOMPurify.sanitize(post.content_html || "");
 
+  const breadcrumbJson = breadcrumbJsonLd([
+    { name: "Home", url: `${SITE_URL}/` },
+    { name: "Journal", url: `${SITE_URL}/blog` },
+    { name: post.title, url: `${SITE_URL}/blog/${post.slug}` },
+  ]);
+
   return (
-    <div className="max-w-4xl mx-auto px-6 py-12">
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJson) }}
+      />
+      <div className="max-w-4xl mx-auto px-6 py-12">
       <Link
         href="/blog"
         className="inline-flex items-center gap-1.5 text-sm text-neutral-400 hover:text-neutral-900 transition-colors mb-8"
