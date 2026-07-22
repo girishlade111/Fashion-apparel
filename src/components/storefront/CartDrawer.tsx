@@ -1,12 +1,23 @@
 "use client";
 
-import { useEffect, useCallback, useState } from "react";
+import { useEffect, useCallback, useState, useRef } from "react";
 import Link from "next/link";
 import { useCart } from "@/lib/cart-context";
 import CartItemRow from "./CartItemRow";
 
+type RecommendedProduct = {
+  id: string;
+  name: string;
+  slug: string;
+  base_price: number;
+  compare_at_price: number | null;
+  primary_image: { url: string; alt_text: string | null } | null;
+};
+
 export default function CartDrawer() {
   const { drawerOpen, closeDrawer, items, itemCount } = useCart();
+  const [recommended, setRecommended] = useState<RecommendedProduct[]>([]);
+  const fetched = useRef(false);
 
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
@@ -27,6 +38,25 @@ export default function CartDrawer() {
       document.body.style.overflow = "";
     };
   }, [drawerOpen, handleKeyDown]);
+
+  useEffect(() => {
+    if (drawerOpen && items.length > 0 && !fetched.current) {
+      fetched.current = true;
+      const categoryIds = [...new Set(items.map((i) => i.product.id))];
+      fetch("/api/products/recommended", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ product_ids: categoryIds }),
+      })
+        .then((r) => r.json())
+        .then((data) => setRecommended(data.products || []))
+        .catch(() => {});
+    }
+    if (!drawerOpen) {
+      fetched.current = false;
+      setRecommended([]);
+    }
+  }, [drawerOpen, items]);
 
   return (
     <>
@@ -83,7 +113,46 @@ export default function CartDrawer() {
                 </Link>
               </div>
             ) : (
-              items.map((item) => <CartItemRow key={item.id} item={item} />)
+              <>
+                {items.map((item) => <CartItemRow key={item.id} item={item} />)}
+                {recommended.length > 0 && (
+                  <div className="pt-4 border-t border-neutral-100">
+                    <h3 className="text-xs font-medium text-neutral-500 uppercase tracking-wider mb-3">
+                      You May Also Like
+                    </h3>
+                    <div className="flex gap-3 overflow-x-auto scrollbar-none">
+                      {recommended.map((p) => (
+                        <Link
+                          key={p.id}
+                          href={`/products/${p.slug}`}
+                          onClick={closeDrawer}
+                          className="shrink-0 w-28 snap-start group"
+                        >
+                          <div className="aspect-[3/4] bg-neutral-100 rounded-lg overflow-hidden mb-1.5">
+                            {p.primary_image ? (
+                              <img
+                                src={p.primary_image.url}
+                                alt={p.primary_image.alt_text || p.name}
+                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                              />
+                            ) : (
+                              <div className="w-full h-full flex items-center justify-center text-neutral-300">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+                              </div>
+                            )}
+                          </div>
+                          <p className="text-[11px] text-neutral-700 truncate group-hover:text-neutral-900">
+                            {p.name}
+                          </p>
+                          <p className="text-[11px] text-neutral-500">
+                            ₹{p.base_price.toLocaleString()}
+                          </p>
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </>
             )}
           </div>
 

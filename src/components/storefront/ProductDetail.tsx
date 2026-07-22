@@ -341,9 +341,20 @@ export default function ProductDetail({ product: initial }: { product: Product }
           <div className="flex gap-5 overflow-x-auto pb-4 scrollbar-none snap-x">
             {initial.related_products.map((p) => (
               <Link key={p.id} href={`/products/${p.slug}`} className="shrink-0 w-48 snap-start group">
-                <div className="aspect-[3/4] bg-neutral-100 rounded-lg mb-2">
+                <div className="aspect-[3/4] bg-neutral-100 rounded-lg mb-2 relative overflow-hidden">
+                  {p.primary_image ? (
+                    <img
+                      src={p.primary_image.url}
+                      alt={p.primary_image.alt_text || p.name}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center text-neutral-300">
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+                    </div>
+                  )}
                   {p.compare_at_price && p.compare_at_price > p.base_price && (
-                    <span className="absolute m-2 bg-red-500 text-white text-[10px] font-medium px-2 py-0.5 rounded-full">
+                    <span className="absolute top-2 left-2 bg-red-500 text-white text-[10px] font-medium px-2 py-0.5 rounded-full">
                       Sale
                     </span>
                   )}
