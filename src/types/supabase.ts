@@ -169,6 +169,120 @@ export interface Database {
           added_at?: string;
         };
       };
+      orders: {
+        Row: {
+          id: string;
+          order_number: string;
+          customer_name: string;
+          customer_email: string;
+          customer_phone: string | null;
+          shipping_address: Json;
+          subtotal: number;
+          discount_amount: number;
+          shipping_fee: number;
+          total: number;
+          status: OrderStatus;
+          razorpay_order_id: string | null;
+          razorpay_payment_id: string | null;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          order_number?: string;
+          customer_name: string;
+          customer_email: string;
+          customer_phone?: string | null;
+          shipping_address: Json;
+          subtotal: number;
+          discount_amount?: number;
+          shipping_fee: number;
+          total: number;
+          status?: OrderStatus;
+          razorpay_order_id?: string | null;
+          razorpay_payment_id?: string | null;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          order_number?: string;
+          customer_name?: string;
+          customer_email?: string;
+          customer_phone?: string | null;
+          shipping_address?: Json;
+          subtotal?: number;
+          discount_amount?: number;
+          shipping_fee?: number;
+          total?: number;
+          status?: OrderStatus;
+          razorpay_order_id?: string | null;
+          razorpay_payment_id?: string | null;
+          created_at?: string;
+        };
+      };
+      order_items: {
+        Row: {
+          id: string;
+          order_id: string;
+          product_variant_id: string | null;
+          product_name_snapshot: string;
+          variant_label_snapshot: string;
+          unit_price_snapshot: number;
+          quantity: number;
+        };
+        Insert: {
+          id?: string;
+          order_id: string;
+          product_variant_id?: string | null;
+          product_name_snapshot: string;
+          variant_label_snapshot: string;
+          unit_price_snapshot: number;
+          quantity: number;
+        };
+        Update: {
+          id?: string;
+          order_id?: string;
+          product_variant_id?: string | null;
+          product_name_snapshot?: string;
+          variant_label_snapshot?: string;
+          unit_price_snapshot?: number;
+          quantity?: number;
+        };
+      };
+      discount_codes: {
+        Row: {
+          id: string;
+          code: string;
+          discount_type: DiscountType;
+          value: number;
+          min_order_value: number | null;
+          expires_at: string | null;
+          usage_limit: number | null;
+          times_used: number;
+          active: boolean;
+        };
+        Insert: {
+          id?: string;
+          code: string;
+          discount_type: DiscountType;
+          value: number;
+          min_order_value?: number | null;
+          expires_at?: string | null;
+          usage_limit?: number | null;
+          times_used?: number;
+          active?: boolean;
+        };
+        Update: {
+          id?: string;
+          code?: string;
+          discount_type?: DiscountType;
+          value?: number;
+          min_order_value?: number | null;
+          expires_at?: string | null;
+          usage_limit?: number | null;
+          times_used?: number;
+          active?: boolean;
+        };
+      };
     };
     Views: Record<string, never>;
     Functions: Record<string, never>;
