@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useCallback, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 
 type ApprovedReview = {
   id: string;
@@ -129,15 +129,6 @@ export default function ProductReviews({
   useEffect(() => {
     fetchReviews(1);
   }, [productId]);
-
-  const starBreakdown = useCallback(() => {
-    if (totalCount === 0) return [];
-    const counts: Record<number, number> = { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 };
-    return [5, 4, 3, 2, 1].map((star) => ({
-      star,
-      pct: 0,
-    }));
-  }, [totalCount]);
 
   return (
     <div className="max-w-2xl">
