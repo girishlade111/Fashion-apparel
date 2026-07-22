@@ -40,13 +40,6 @@ export async function GET(
       .eq("id", product.category_id)
       .single();
 
-    if (error || !product) {
-      return NextResponse.json(
-        { error: "Product not found" },
-        { status: 404 },
-      );
-    }
-
     const [imagesResult, variantsResult, reviewsResult, relatedResult] =
       await Promise.all([
         supabase
