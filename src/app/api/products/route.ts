@@ -11,6 +11,7 @@ export async function GET(request: NextRequest) {
     const size = sp.get("size");
     const color = sp.get("color");
     const search = sp.get("search");
+    const ids = sp.get("ids");
     const sort = sp.get("sort") || "newest";
     const page = Math.max(1, parseInt(sp.get("page") || "1", 10) || 1);
     const limit = Math.min(60, Math.max(1, parseInt(sp.get("limit") || "24", 10) || 24));
