@@ -1,5 +1,6 @@
 import { CartProvider } from "@/lib/cart-context";
 import Navbar from "@/components/storefront/Navbar";
+import CartDrawer from "@/components/storefront/CartDrawer";
 import { createAdminClient } from "@/lib/supabase/server";
 
 async function getCategories() {
