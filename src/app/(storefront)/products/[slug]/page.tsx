@@ -1,4 +1,5 @@
 import { createAdminClient } from "@/lib/supabase/server";
+import { getRelated } from "@/lib/products/getRelated";
 import ProductDetail from "@/components/storefront/ProductDetail";
 import { notFound } from "next/navigation";
 
@@ -34,11 +35,13 @@ export default async function ProductPage({ params }: { params: Params }) {
     .eq("id", product.category_id)
     .single();
 
+  const relatedPromise = getRelated({ productId: product.id, limit: 4 });
+
   const [imagesResult, variantsResult, reviewsResult, relatedResult] = await Promise.all([
     supabase.from("product_images").select("*").eq("product_id", product.id).order("sort_order", { ascending: true }),
     supabase.from("product_variants").select("*").eq("product_id", product.id).order("size", { ascending: true }),
     supabase.from("reviews").select("*").eq("product_id", product.id).eq("status", "approved").order("created_at", { ascending: false }),
-    supabase.from("products").select("id, name, slug, base_price, compare_at_price").eq("category_id", product.category_id).eq("status", "active").neq("id", product.id).limit(4).order("created_at", { ascending: false }),
+    relatedPromise,
   ]);
 
   const variants = (variantsResult.data || []).map((v: any) => ({
