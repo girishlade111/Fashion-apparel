@@ -7,6 +7,8 @@ export type Json =
   | Json[];
 
 export type ProductStatus = "draft" | "active" | "archived";
+export type OrderStatus = "pending" | "paid" | "failed" | "shipped" | "delivered" | "cancelled";
+export type DiscountType = "percentage" | "fixed";
 
 export interface Database {
   public: {
@@ -172,6 +174,8 @@ export interface Database {
     Functions: Record<string, never>;
     Enums: {
       product_status: ProductStatus;
+      order_status: OrderStatus;
+      discount_type: DiscountType;
     };
     CompositeTypes: Record<string, never>;
   };
