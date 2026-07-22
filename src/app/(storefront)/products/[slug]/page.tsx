@@ -53,6 +53,7 @@ export default async function ProductPage({ params }: { params: Params }) {
     stock_quantity: v.stock_quantity,
     price_override: v.price_override,
     inStock: (v.stock_quantity || 0) > 0,
+    isLowStock: (v.stock_quantity || 0) > 0 && v.stock_quantity <= LOW_STOCK_THRESHOLD,
   }));
 
   const reviews = reviewsResult.data || [];
