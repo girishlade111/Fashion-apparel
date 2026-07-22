@@ -136,7 +136,7 @@ export default function CheckoutPage() {
 
       const data = await res.json();
       setCheckoutData(data);
-      openRazorpay(data, router);
+      openRazorpay(data, form.email.trim(), router);
     } catch (err: any) {
       setSubmitError(err.message || "Something went wrong");
       setSubmitState("retry");
@@ -379,7 +379,7 @@ export default function CheckoutPage() {
   );
 }
 
-function openRazorpay(data: any, router: ReturnType<typeof useRouter>) {
+function openRazorpay(data: any, email: string, router: ReturnType<typeof useRouter>) {
   const options = {
     key: data.razorpay_key_id,
     amount: data.amount,
@@ -389,7 +389,8 @@ function openRazorpay(data: any, router: ReturnType<typeof useRouter>) {
     order_id: data.razorpay_order_id,
     handler(response: any) {
       if (response.razorpay_payment_id) {
-        router.push(`/order/confirmation/${data.order_number}`);
+        sessionStorage.setItem("order_email", email);
+        router.push(`/order-confirmation/${data.order_number}`);
       }
     },
     modal: {
