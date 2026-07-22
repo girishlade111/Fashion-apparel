@@ -121,7 +121,7 @@ function CartFooter({ onCheckout }: { onCheckout: () => void }) {
         onClick={onCheckout}
         className="block w-full text-center text-sm bg-neutral-900 text-white rounded-lg py-3 hover:bg-neutral-800 transition-colors"
       >
-        Checkout
+        Proceed to Checkout
       </Link>
       <Link
         href="/cart"
