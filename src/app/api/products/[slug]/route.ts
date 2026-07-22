@@ -9,22 +9,36 @@ export async function GET(
     const { slug } = await params;
     const supabase = createAdminClient();
 
-    const { data: product, error } = await supabase
+    const { data: raw, error } = await supabase
       .from("products")
-      .select("id, name, slug, description, base_price, compare_at_price, category_id, category:categories(name, slug)")
+      .select("*")
       .eq("slug", slug)
       .eq("status", "active")
-      .single()
-      .overrideTypes<{
-        id: string;
-        name: string;
-        slug: string;
-        description: string | null;
-        base_price: number;
-        compare_at_price: number | null;
-        category_id: string;
-        category: { name: string; slug: string } | null;
-      }>();
+      .single();
+
+    if (error || !raw) {
+      return NextResponse.json(
+        { error: "Product not found" },
+        { status: 404 },
+      );
+    }
+
+    const product: {
+      id: string;
+      name: string;
+      slug: string;
+      description: string | null;
+      base_price: number;
+      compare_at_price: number | null;
+      category_id: string;
+      created_at: string;
+    } = raw;
+
+    const { data: category } = await supabase
+      .from("categories")
+      .select("name, slug")
+      .eq("id", product.category_id)
+      .single();
 
     if (error || !product) {
       return NextResponse.json(
