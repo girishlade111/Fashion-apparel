@@ -105,7 +105,7 @@ export async function GET(
       description: product.description,
       base_price: product.base_price,
       compare_at_price: product.compare_at_price,
-      category: product.category,
+      category: category,
       images: imagesResult.data || [],
       variants,
       inStock: variants.some((v) => v.inStock),
