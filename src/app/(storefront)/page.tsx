@@ -44,7 +44,7 @@ export default async function Home() {
 
   return (
     <main>
-        <section className="relative h-screen w-full overflow-hidden bg-black">
+        <section className="relative h-[calc(100vh-4rem)] w-full overflow-hidden bg-black">
           <Image
             src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=1920&q=80"
             alt=""
