@@ -43,20 +43,7 @@ export default async function Home() {
   const { categories, products } = await getData();
 
   return (
-    <>
-      <header className="fixed top-0 left-0 right-0 z-50 mix-blend-difference">
-        <div className="flex items-center justify-between px-6 py-5 max-w-7xl mx-auto">
-          <Link href="/" className="font-heading text-lg tracking-wide text-white">
-            Fashion Apparel
-          </Link>
-          <nav className="flex gap-8 text-sm font-medium text-white/80">
-            <Link href="/shop" className="hover:text-white transition-colors">Shop</Link>
-            <Link href="/blog" className="hover:text-white transition-colors">Journal</Link>
-          </nav>
-        </div>
-      </header>
-
-      <main>
+    <main>
         <section className="relative h-screen w-full overflow-hidden bg-black">
           <Image
             src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=1920&q=80"
