@@ -124,6 +124,49 @@ export interface Database {
           price_override?: number | null;
         };
       };
+      cart_sessions: {
+        Row: {
+          id: string;
+          cookie_token: string;
+          created_at: string;
+          last_active_at: string;
+        };
+        Insert: {
+          id?: string;
+          cookie_token: string;
+          created_at?: string;
+          last_active_at?: string;
+        };
+        Update: {
+          id?: string;
+          cookie_token?: string;
+          created_at?: string;
+          last_active_at?: string;
+        };
+      };
+      cart_items: {
+        Row: {
+          id: string;
+          cart_session_id: string;
+          product_variant_id: string;
+          quantity: number;
+          added_at: string;
+        };
+        Insert: {
+          id?: string;
+          cart_session_id: string;
+          product_variant_id: string;
+          quantity?: number;
+          added_at?: string;
+        };
+        Update: {
+          id?: string;
+          cart_session_id?: string;
+          product_variant_id?: string;
+          quantity?: number;
+          added_at?: string;
+        };
+      };
     };
     Views: Record<string, never>;
     Functions: Record<string, never>;
