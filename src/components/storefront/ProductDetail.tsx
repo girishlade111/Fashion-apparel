@@ -14,6 +14,7 @@ type Variant = {
   stock_quantity: number;
   price_override: number | null;
   inStock: boolean;
+  isLowStock?: boolean;
 };
 
 type Product = {
