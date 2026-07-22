@@ -266,6 +266,20 @@ export default function ProductDetail({ product: initial }: { product: Product }
             </div>
           )}
 
+          {/* Low Stock */}
+          {(() => {
+            const selectedVariant = initial.variants.find((v) => {
+              if (sizes.length > 0 && v.size !== selectedSize) return false;
+              if (colors.length > 0 && v.color !== selectedColor) return false;
+              return true;
+            });
+            return selectedVariant?.isLowStock && selectedVariant.stock_quantity > 0 ? (
+              <p className="mt-4 text-sm text-amber-600 font-medium">
+                Only {selectedVariant.stock_quantity} left
+              </p>
+            ) : null;
+          })()}
+
           {/* Quantity + Add to Cart */}
           <div className="flex items-center gap-3 mt-6">
             <div className="flex items-center border border-neutral-300 rounded-lg">
