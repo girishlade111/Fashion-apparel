@@ -2,6 +2,7 @@ import { CartProvider } from "@/lib/cart-context";
 import { WishlistProvider } from "@/lib/wishlist-context";
 import Navbar from "@/components/storefront/Navbar";
 import CartDrawer from "@/components/storefront/CartDrawer";
+import Footer from "@/components/storefront/Footer";
 import { createAdminClient } from "@/lib/supabase/server";
 
 async function getCategories() {
@@ -25,6 +26,7 @@ export default async function StorefrontLayout({
         <Navbar categories={categories} />
         <CartDrawer />
         {children}
+        <Footer categories={categories} />
       </WishlistProvider>
     </CartProvider>
   );
