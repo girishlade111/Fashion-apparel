@@ -69,7 +69,7 @@ export default function OrderConfirmationPage() {
     let attempts = 0;
 
     async function poll() {
-      const order = await fetchOrder(email);
+      const order = await fetchOrder(email!);
       if (!order) {
         attempts++;
         if (attempts >= MAX_POLL_ATTEMPTS) {
