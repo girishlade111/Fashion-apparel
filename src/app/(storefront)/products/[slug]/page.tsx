@@ -88,6 +88,29 @@ export default async function ProductPage({ params }: { params: Params }) {
     ? Math.round((reviews.reduce((s: number, r: any) => s + r.rating, 0) / reviews.length) * 10) / 10
     : null;
 
+  const mainImage = imagesResult.data?.[0] || null;
+  const inStock = variants.some((v: any) => v.inStock);
+
+  const productJson = productJsonLd({
+    name: product.name,
+    description: product.description,
+    slug: product.slug,
+    base_price: product.base_price,
+    compare_at_price: product.compare_at_price,
+    inStock,
+    image: mainImage?.url || null,
+    category: category?.name || null,
+    reviewCount: reviews.length,
+    averageRating: avgRating,
+  });
+
+  const breadcrumbJson = breadcrumbJsonLd([
+    { name: "Home", url: `${SITE_URL}/` },
+    { name: "Shop", url: `${SITE_URL}/shop` },
+    ...(category ? [{ name: category.name, url: `${SITE_URL}/shop?category=${category.slug}` }] : []),
+    { name: product.name, url: `${SITE_URL}/products/${product.slug}` },
+  ]);
+
   const data = {
     id: product.id,
     name: product.name,
@@ -98,7 +121,7 @@ export default async function ProductPage({ params }: { params: Params }) {
     category: category || null,
     images: imagesResult.data || [],
     variants,
-    inStock: variants.some((v: any) => v.inStock),
+    inStock,
     reviews: {
       items: reviews.map((r: any) => ({
         id: r.id,
@@ -121,5 +144,17 @@ export default async function ProductPage({ params }: { params: Params }) {
     })),
   };
 
-  return <ProductDetail product={data} />;
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJson) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productJson) }}
+      />
+      <ProductDetail product={data} />
+    </>
+  );
 }
