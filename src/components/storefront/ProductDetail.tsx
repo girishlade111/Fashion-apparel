@@ -71,6 +71,7 @@ export default function ProductDetail({ product: initial }: { product: Product }
   const [added, setAdded] = useState(false);
   const [error, setError] = useState("");
   const { refreshCart } = useCart();
+  const { toggleWishlist, isWishlisted } = useWishlist();
 
   const sizes = useMemo(() => [...new Set(initial.variants.map((v) => v.size).filter(Boolean))], [initial.variants]);
   const colors = useMemo(() => [...new Set(initial.variants.map((v) => v.color).filter(Boolean))], [initial.variants]);
