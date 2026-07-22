@@ -121,8 +121,8 @@ export default function Navbar({ categories }: { categories: Category[] }) {
               </svg>
             </button>
 
-            <Link
-              href="/cart"
+            <button
+              onClick={openDrawer}
               className="relative w-9 h-9 flex items-center justify-center text-neutral-500 hover:text-neutral-900 transition-colors"
               aria-label={`Cart (${itemCount} items)`}
             >
@@ -136,7 +136,7 @@ export default function Navbar({ categories }: { categories: Category[] }) {
                   {itemCount > 9 ? "9+" : itemCount}
                 </span>
               )}
-            </Link>
+            </button>
 
             <button
               onClick={() => setMobileOpen(true)}
