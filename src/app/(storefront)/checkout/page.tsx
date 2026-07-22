@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useCart } from "@/lib/cart-context";
@@ -22,6 +22,19 @@ declare global {
   interface Window {
     Razorpay: any;
   }
+}
+
+function useRazorpayScript() {
+  const loaded = useRef(false);
+  useEffect(() => {
+    if (loaded.current || typeof window === "undefined") return;
+    if ((window as any).Razorpay) { loaded.current = true; return; }
+    loaded.current = true;
+    const script = document.createElement("script");
+    script.src = "https://checkout.razorpay.com/v1/checkout.js";
+    script.async = true;
+    document.head.appendChild(script);
+  }, []);
 }
 
 function validateForm(data: FormData): FormErrors {
