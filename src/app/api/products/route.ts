@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createAdminClient } from "@/lib/supabase/server";
+import { LOW_STOCK_THRESHOLD } from "@/lib/constants";
 
 export async function GET(request: NextRequest) {
   try {
