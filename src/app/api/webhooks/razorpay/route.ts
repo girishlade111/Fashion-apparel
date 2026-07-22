@@ -73,23 +73,21 @@ export async function POST(request: NextRequest) {
       const orderItems: any[] = itemsResult.data || [];
 
       for (const item of orderItems) {
-        await (supabase.rpc("decrement_stock") as any).catch(async () => {
-          const current = await (supabase.from("product_variants") as any)
-            .select("stock_quantity")
-            .eq("id", item.product_variant_id)
-            .single();
-          if (current.data) {
-            const newQty = Math.max(0, current.data.stock_quantity - item.quantity);
-            if (newQty === 0 && current.data.stock_quantity - item.quantity < 0) {
-              console.warn(
-                `Oversell: variant ${item.product_variant_id} had ${current.data.stock_quantity}, ordered ${item.quantity}`,
-              );
-            }
-            await (supabase.from("product_variants") as any)
-              .update({ stock_quantity: newQty })
-              .eq("id", item.product_variant_id);
+        const current = await (supabase.from("product_variants") as any)
+          .select("stock_quantity")
+          .eq("id", item.product_variant_id)
+          .single();
+        if (current.data) {
+          const newQty = Math.max(0, current.data.stock_quantity - item.quantity);
+          if (current.data.stock_quantity - item.quantity < 0) {
+            console.warn(
+              `Oversell: variant ${item.product_variant_id} had ${current.data.stock_quantity}, ordered ${item.quantity}`,
+            );
           }
-        });
+          await (supabase.from("product_variants") as any)
+            .update({ stock_quantity: newQty })
+            .eq("id", item.product_variant_id);
+        }
       }
 
       // Email confirmation is triggered in a separate step (Prompt 18)
