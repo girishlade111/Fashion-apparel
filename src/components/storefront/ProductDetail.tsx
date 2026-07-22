@@ -3,6 +3,7 @@
 import { useState, useMemo, useCallback } from "react";
 import Link from "next/link";
 import ImageGallery from "./ImageGallery";
+import ProductReviews from "./ProductReviews";
 import { useCart } from "@/lib/cart-context";
 
 type Variant = {
