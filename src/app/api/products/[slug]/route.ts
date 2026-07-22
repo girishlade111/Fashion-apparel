@@ -71,7 +71,7 @@ export async function GET(
           .order("created_at", { ascending: false }),
       ]);
 
-    const variants = (variantsResult.data || []).map((v) => ({
+    const variants = (variantsResult.data || []).map((v: any) => ({
       id: v.id,
       size: v.size,
       color: v.color,
@@ -85,7 +85,7 @@ export async function GET(
     const avgRating =
       reviews.length > 0
         ? Math.round(
-            (reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length) *
+            (reviews.reduce((sum: number, r: any) => sum + r.rating, 0) / reviews.length) *
               10,
           ) / 10
         : null;
@@ -108,9 +108,9 @@ export async function GET(
       category: category,
       images: imagesResult.data || [],
       variants,
-      inStock: variants.some((v) => v.inStock),
+      inStock: variants.some((v: any) => v.inStock),
       reviews: {
-        items: reviews.map((r) => ({
+        items: reviews.map((r: any) => ({
           id: r.id,
           reviewer_name: r.reviewer_name,
           rating: r.rating,
