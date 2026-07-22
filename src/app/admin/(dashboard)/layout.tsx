@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import { getAdminSession } from "@/lib/auth/admin";
+import Sidebar from "./Sidebar";
 
 export default async function DashboardLayout({
   children,
@@ -12,5 +13,12 @@ export default async function DashboardLayout({
     redirect("/admin/login");
   }
 
-  return <>{children}</>;
+  return (
+    <div className="flex min-h-screen bg-neutral-50">
+      <Sidebar />
+      <main className="flex-1 ml-64 p-8">
+        {children}
+      </main>
+    </div>
+  );
 }
