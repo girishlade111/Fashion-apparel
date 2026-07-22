@@ -148,12 +148,12 @@ export default function CartPage() {
                 )}
               </div>
 
-              <button
-                onClick={handleCheckout}
-                className="w-full text-sm bg-neutral-900 text-white rounded-lg py-3 hover:bg-neutral-800 transition-colors mt-2"
+              <Link
+                href="/checkout"
+                className="block w-full text-center text-sm bg-neutral-900 text-white rounded-lg py-3 hover:bg-neutral-800 transition-colors mt-2"
               >
                 Proceed to Checkout
-              </button>
+              </Link>
 
               <Link
                 href="/shop"
