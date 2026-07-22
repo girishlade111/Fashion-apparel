@@ -65,11 +65,12 @@ export async function POST(request: NextRequest) {
 
     const variantIds = cartItems.map((i: any) => i.product_variant_id);
 
-    const { data: variants } = await (supabase.from("product_variants") as any)
+    const variantsResult = await (supabase.from("product_variants") as any)
       .select("*, product:products!inner(id, name, slug, base_price, status)")
       .in("id", variantIds);
+    const variants: any[] = variantsResult.data || [];
 
-    if (!variants || variants.length === 0) {
+    if (variants.length === 0) {
       return NextResponse.json({ error: "Cart items not found" }, { status: 400 });
     }
 
