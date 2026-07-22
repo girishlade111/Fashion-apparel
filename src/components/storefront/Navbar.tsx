@@ -173,6 +173,15 @@ export default function Navbar({ categories }: { categories: Category[] }) {
             </button>
           </div>
           <nav className="px-6 py-8 space-y-1">
+            <button
+              onClick={() => { setMobileOpen(false); setSearchOpen(true); }}
+              className="flex items-center gap-3 w-full py-3 text-lg text-neutral-700 border-b border-neutral-100 text-left"
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="11" cy="11" r="8" /><path d="m21 21-4.3-4.3" />
+              </svg>
+              Search
+            </button>
             {categories.map((cat) => (
               <Link
                 key={cat.slug}
