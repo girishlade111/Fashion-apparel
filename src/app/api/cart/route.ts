@@ -23,11 +23,12 @@ async function getOrCreateSession(
   supabase: ReturnType<typeof createAdminClient>,
   token: string,
 ): Promise<string> {
-    const { data: existing } = await supabase
+    const { data: sessionRow } = await supabase
       .from("cart_sessions")
       .select("*")
       .eq("cookie_token", token)
-      .single();
+      .maybeSingle();
+    const existing: { id: string; last_active_at: string } | null = sessionRow as any;
 
   if (existing) {
     if (
