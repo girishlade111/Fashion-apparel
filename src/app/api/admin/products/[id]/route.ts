@@ -128,12 +128,14 @@ export async function DELETE(
     return NextResponse.json({ error: "Not found" }, { status: 404 });
   }
 
-  const { count: orderCount } = await (supabase.from("order_items") as any)
-    .select("id", { count: "exact", head: true })
-    .eq("product_variant_id", id)
+  const { data: orderCheck } = await (supabase.from("order_items") as any)
+    .select("id")
+    .in("product_variant_id", (
+      supabase.from("product_variants") as any
+    ).select("id").eq("product_id", id))
     .limit(1);
 
-  const hasOrders = (orderCount ?? 0) > 0;
+  const hasOrders = (orderCheck || []).length > 0;
 
   if (hasOrders) {
     await (supabase.from("products") as any)
