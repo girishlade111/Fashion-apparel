@@ -48,6 +48,8 @@ export async function GET(request: NextRequest) {
       const sortedImages = [...(p.product_images || [])].sort(
         (a: any, b: any) => a.sort_order - b.sort_order,
       );
+      const variants = p.product_variants || [];
+      const totalStock = variants.reduce((s: number, v: any) => s + (v.stock_quantity || 0), 0);
       return {
         id: p.id,
         name: p.name,
@@ -61,6 +63,9 @@ export async function GET(request: NextRequest) {
           min: Math.min(...prices),
           max: Math.max(...prices),
         },
+        in_stock: totalStock > 0,
+        sizes: [...new Set(variants.map((v: any) => v.size).filter(Boolean))] as string[],
+        colors: [...new Set(variants.map((v: any) => v.color).filter(Boolean))] as string[],
         created_at: p.created_at,
       };
     });
