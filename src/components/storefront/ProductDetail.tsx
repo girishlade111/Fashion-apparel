@@ -269,8 +269,8 @@ export default function ProductDetail({ product: initial }: { product: Product }
           {/* Low Stock */}
           {(() => {
             const selectedVariant = initial.variants.find((v) => {
-              if (sizes.length > 0 && v.size !== selectedSize) return false;
-              if (colors.length > 0 && v.color !== selectedColor) return false;
+              if (selectedSize && v.size !== selectedSize) return false;
+              if (selectedColor && v.color !== selectedColor) return false;
               return true;
             });
             return selectedVariant?.isLowStock && selectedVariant.stock_quantity > 0 ? (
