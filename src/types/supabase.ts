@@ -9,6 +9,7 @@ export type Json =
 export type ProductStatus = "draft" | "active" | "archived";
 export type OrderStatus = "pending" | "paid" | "failed" | "shipped" | "delivered" | "cancelled";
 export type DiscountType = "percentage" | "fixed";
+export type ReviewStatus = "pending" | "approved" | "rejected";
 
 export interface Database {
   public: {
@@ -283,6 +284,41 @@ export interface Database {
           active?: boolean;
         };
       };
+      reviews: {
+        Row: {
+          id: string;
+          product_id: string;
+          reviewer_name: string;
+          reviewer_email: string;
+          rating: number;
+          title: string | null;
+          body: string | null;
+          status: ReviewStatus;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          product_id: string;
+          reviewer_name: string;
+          reviewer_email: string;
+          rating: number;
+          title?: string | null;
+          body?: string | null;
+          status?: ReviewStatus;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          product_id?: string;
+          reviewer_name?: string;
+          reviewer_email?: string;
+          rating?: number;
+          title?: string | null;
+          body?: string | null;
+          status?: ReviewStatus;
+          created_at?: string;
+        };
+      };
     };
     Views: Record<string, never>;
     Functions: Record<string, never>;
@@ -290,6 +326,7 @@ export interface Database {
       product_status: ProductStatus;
       order_status: OrderStatus;
       discount_type: DiscountType;
+      review_status: ReviewStatus;
     };
     CompositeTypes: Record<string, never>;
   };
