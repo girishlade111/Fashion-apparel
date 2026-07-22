@@ -103,6 +103,38 @@ export default function CartPage() {
                 <CartItemRow key={item.id} item={item} />
               ))}
             </div>
+
+            {/* You May Also Like */}
+            {recommended.length > 0 && (
+              <div className="mt-12">
+                <h2 className="font-heading text-lg text-neutral-900 mb-4">You May Also Like</h2>
+                <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-none snap-x">
+                  {recommended.map((p) => (
+                    <Link
+                      key={p.id}
+                      href={`/products/${p.slug}`}
+                      className="shrink-0 w-36 snap-start group"
+                    >
+                      <div className="aspect-[3/4] bg-neutral-100 rounded-lg overflow-hidden mb-2">
+                        {p.primary_image ? (
+                          <img
+                            src={p.primary_image.url}
+                            alt={p.primary_image.alt_text || p.name}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                          />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center text-neutral-300">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+                          </div>
+                        )}
+                      </div>
+                      <p className="text-sm text-neutral-700 group-hover:text-neutral-900 transition-colors truncate">{p.name}</p>
+                      <p className="text-sm text-neutral-500">₹{p.base_price.toLocaleString()}</p>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Summary */}
