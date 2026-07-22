@@ -64,6 +64,8 @@ export default function CheckoutPage() {
   const [submitError, setSubmitError] = useState("");
   const [checkoutData, setCheckoutData] = useState<any>(null);
 
+  useRazorpayScript();
+
   const discountAmount = 0;
   const shipping = subtotal >= 500 ? 0 : 99;
   const total = Math.max(0, subtotal - discountAmount + shipping);
