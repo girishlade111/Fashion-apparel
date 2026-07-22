@@ -43,7 +43,8 @@ export default async function Home() {
   const { categories, products } = await getData();
 
   return (
-    <main>
+    <>
+      <main>
         <section className="relative h-[calc(100vh-4rem)] w-full overflow-hidden bg-black">
           <Image
             src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=1920&q=80"
