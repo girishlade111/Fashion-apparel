@@ -21,6 +21,7 @@ export default async function StorefrontLayout({
   return (
     <CartProvider>
       <Navbar categories={categories} />
+      <CartDrawer />
       {children}
     </CartProvider>
   );
