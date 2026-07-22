@@ -53,11 +53,11 @@ export async function getRelated(
     .not("id", "in", `(${allExcludeIds.map((id) => `"${id}"`).join(",")})`)
     .order("created_at", { ascending: false }) as any);
 
-  if (!related || related.length === 0) {
+  if (!related || (related as any[]).length === 0) {
     return [];
   }
 
-  const withStock = related.map((p: any) => {
+  const withStock = (related as any[]).map((p: any) => {
     const sortedImages = [...(p.product_images || [])].sort(
       (a: any, b: any) => a.sort_order - b.sort_order,
     );
