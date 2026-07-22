@@ -31,7 +31,7 @@ export async function getRelated(
       .single();
 
     if (product) {
-      categoryIds = [product.category_id];
+      categoryIds = [product.category_id as string];
     }
   }
 
