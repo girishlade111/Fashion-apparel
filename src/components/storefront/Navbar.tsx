@@ -52,9 +52,15 @@ export default function Navbar({ categories }: { categories: Category[] }) {
           <div className="flex items-center gap-10">
             <Link
               href="/"
-              className="font-heading text-xl tracking-tight text-neutral-900"
+              className="block shrink-0"
             >
-              Fashion Apparel
+              <img
+                src="/logo.svg"
+                alt="Fashion Apparel"
+                width="36"
+                height="36"
+                className="block"
+              />
             </Link>
 
             <nav className="hidden lg:flex items-center gap-1">

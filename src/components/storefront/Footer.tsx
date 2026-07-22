@@ -188,8 +188,14 @@ export default function Footer({ categories }: { categories: Category[] }) {
       {/* Bottom bar */}
       <div className="border-t border-white/10">
         <div className="max-w-7xl mx-auto px-6 py-8 flex flex-col md:flex-row items-center justify-between gap-6">
-          <Link href="/" className="font-heading text-white/60 text-base tracking-wide hover:text-white/80 transition-colors">
-            Fashion Apparel
+          <Link href="/" className="block shrink-0 hover:opacity-80 transition-opacity">
+            <img
+              src="/logo.svg"
+              alt="Fashion Apparel"
+              width="28"
+              height="28"
+              className="block brightness-150 opacity-60"
+            />
           </Link>
 
           <div className="flex items-center gap-4">
