@@ -14,40 +14,44 @@ export const metadata: Metadata = {
 };
 
 async function getData() {
-  const supabase = createAdminClient();
+  try {
+    const supabase = createAdminClient();
 
-  const { data: categories } = await (supabase.from("categories") as any)
-    .select("name, slug, image_url")
-    .order("name");
+    const { data: categories } = await (supabase.from("categories") as any)
+      .select("name, slug, image_url")
+      .order("name");
 
-  const { data: products } = await (supabase.from("products") as any)
-    .select("id, name, slug, base_price, compare_at_price")
-    .eq("status", "active")
-    .order("created_at", { ascending: false })
-    .limit(8);
+    const { data: products } = await (supabase.from("products") as any)
+      .select("id, name, slug, base_price, compare_at_price")
+      .eq("status", "active")
+      .order("created_at", { ascending: false })
+      .limit(8);
 
-  const productIds = (products || []).map((p: any) => p.id);
-  const imagesMap: Record<string, string> = {};
+    const productIds = (products || []).map((p: any) => p.id);
+    const imagesMap: Record<string, string> = {};
 
-  if (productIds.length > 0) {
-    const { data: images } = await (supabase.from("product_images") as any)
-      .select("product_id, url")
-      .in("product_id", productIds)
-      .order("sort_order");
-    for (const img of images || []) {
-      if (!imagesMap[img.product_id]) {
-        imagesMap[img.product_id] = img.url;
+    if (productIds.length > 0) {
+      const { data: images } = await (supabase.from("product_images") as any)
+        .select("product_id, url")
+        .in("product_id", productIds)
+        .order("sort_order");
+      for (const img of images || []) {
+        if (!imagesMap[img.product_id]) {
+          imagesMap[img.product_id] = img.url;
+        }
       }
     }
-  }
 
-  return {
-    categories: categories || [],
-    products: (products || []).map((p: any) => ({
-      ...p,
-      image: imagesMap[p.id] || null,
-    })),
-  };
+    return {
+      categories: categories || [],
+      products: (products || []).map((p: any) => ({
+        ...p,
+        image: imagesMap[p.id] || null,
+      })),
+    };
+  } catch {
+    return { categories: [], products: [] };
+  }
 }
 
 const testimonials = [

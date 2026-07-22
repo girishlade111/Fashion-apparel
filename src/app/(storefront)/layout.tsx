@@ -8,11 +8,15 @@ import { createAdminClient } from "@/lib/supabase/server";
 export const dynamic = "force-dynamic";
 
 async function getCategories() {
-  const supabase = createAdminClient();
-  const { data } = await (supabase.from("categories") as any)
-    .select("name, slug")
-    .order("name");
-  return data || [];
+  try {
+    const supabase = createAdminClient();
+    const { data } = await (supabase.from("categories") as any)
+      .select("name, slug")
+      .order("name");
+    return data || [];
+  } catch {
+    return [];
+  }
 }
 
 export default async function StorefrontLayout({
