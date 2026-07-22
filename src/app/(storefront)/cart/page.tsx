@@ -1,12 +1,23 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { useCart } from "@/lib/cart-context";
 import CartItemRow from "@/components/storefront/CartItemRow";
 
+type RecommendedProduct = {
+  id: string;
+  name: string;
+  slug: string;
+  base_price: number;
+  compare_at_price: number | null;
+  primary_image: { url: string; alt_text: string | null } | null;
+};
+
 export default function CartPage() {
   const { items, subtotal, itemCount, refreshCart } = useCart();
+  const [recommended, setRecommended] = useState<RecommendedProduct[]>([]);
+  const fetched = useRef(false);
   const [discountCode, setDiscountCode] = useState("");
   const [discount, setDiscount] = useState<{
     code: string;
