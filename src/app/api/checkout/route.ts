@@ -211,9 +211,15 @@ export async function POST(request: NextRequest) {
       .eq("id", order.id);
 
     if (discountId) {
-      await (supabase.from("discount_codes") as any)
-        .update({ times_used: (await (supabase.from("discount_codes") as any).select("times_used").eq("id", discountId).single()).data.times_used + 1 })
-        .eq("id", discountId);
+      const { data: dc } = await (supabase.from("discount_codes") as any)
+        .select("times_used")
+        .eq("id", discountId)
+        .single();
+      if (dc) {
+        await (supabase.from("discount_codes") as any)
+          .update({ times_used: dc.times_used + 1 })
+          .eq("id", discountId);
+      }
     }
 
     await (supabase.from("cart_items") as any)
