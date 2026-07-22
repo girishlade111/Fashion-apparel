@@ -5,6 +5,8 @@ import CartDrawer from "@/components/storefront/CartDrawer";
 import Footer from "@/components/storefront/Footer";
 import { createAdminClient } from "@/lib/supabase/server";
 
+export const dynamic = "force-dynamic";
+
 async function getCategories() {
   const supabase = createAdminClient();
   const { data } = await (supabase.from("categories") as any)
