@@ -319,6 +319,70 @@ export interface Database {
           created_at?: string;
         };
       };
+      blog_categories: {
+        Row: {
+          id: string;
+          name: string;
+          slug: string;
+        };
+        Insert: {
+          id?: string;
+          name: string;
+          slug: string;
+        };
+        Update: {
+          id?: string;
+          name?: string;
+          slug?: string;
+        };
+      };
+      blog_posts: {
+        Row: {
+          id: string;
+          title: string;
+          slug: string;
+          excerpt: string | null;
+          content_html: string | null;
+          cover_image_url: string | null;
+          blog_category_id: string | null;
+          published: boolean;
+          published_at: string | null;
+          created_at: string;
+          updated_at: string;
+          seo_title: string | null;
+          seo_description: string | null;
+        };
+        Insert: {
+          id?: string;
+          title: string;
+          slug: string;
+          excerpt?: string | null;
+          content_html?: string | null;
+          cover_image_url?: string | null;
+          blog_category_id?: string | null;
+          published?: boolean;
+          published_at?: string | null;
+          created_at?: string;
+          updated_at?: string;
+          seo_title?: string | null;
+          seo_description?: string | null;
+        };
+        Update: {
+          id?: string;
+          title?: string;
+          slug?: string;
+          excerpt?: string | null;
+          content_html?: string | null;
+          cover_image_url?: string | null;
+          blog_category_id?: string | null;
+          published?: boolean;
+          published_at?: string | null;
+          created_at?: string;
+          updated_at?: string;
+          seo_title?: string | null;
+          seo_description?: string | null;
+        };
+      };
     };
     Views: Record<string, never>;
     Functions: Record<string, never>;
