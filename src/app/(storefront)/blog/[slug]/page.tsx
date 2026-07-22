@@ -184,5 +184,6 @@ export default async function BlogPostPage({ params }: { params: tParams }) {
         </section>
       )}
     </div>
+    </>
   );
 }
