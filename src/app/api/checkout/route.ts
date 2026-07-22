@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { createAdminClient } from "@/lib/supabase/server";
-import { env } from "@/lib/env";
+import { getServerEnvVar } from "@/lib/env";
 
 const FREE_SHIPPING_THRESHOLD = 500;
 const FLAT_SHIPPING_FEE = 99;
