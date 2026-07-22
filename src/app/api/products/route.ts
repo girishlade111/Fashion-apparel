@@ -66,6 +66,8 @@ export async function GET(request: NextRequest) {
           max: Math.max(...prices),
         },
         in_stock: totalStock > 0,
+        total_stock: totalStock,
+        is_low_stock: totalStock > 0 && totalStock <= LOW_STOCK_THRESHOLD,
         sizes: [...new Set(variants.map((v: any) => v.size).filter(Boolean))] as string[],
         colors: [...new Set(variants.map((v: any) => v.color).filter(Boolean))] as string[],
         created_at: p.created_at,
