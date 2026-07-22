@@ -1,4 +1,5 @@
 import { CartProvider } from "@/lib/cart-context";
+import { WishlistProvider } from "@/lib/wishlist-context";
 import Navbar from "@/components/storefront/Navbar";
 import CartDrawer from "@/components/storefront/CartDrawer";
 import { createAdminClient } from "@/lib/supabase/server";
@@ -20,9 +21,11 @@ export default async function StorefrontLayout({
 
   return (
     <CartProvider>
-      <Navbar categories={categories} />
-      <CartDrawer />
-      {children}
+      <WishlistProvider>
+        <Navbar categories={categories} />
+        <CartDrawer />
+        {children}
+      </WishlistProvider>
     </CartProvider>
   );
 }
