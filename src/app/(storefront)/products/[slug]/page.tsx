@@ -82,12 +82,13 @@ export default async function ProductPage({ params }: { params: Params }) {
       average_rating: avgRating,
       count: reviews.length,
     },
-    related_products: (relatedResult.data || []).map((p: any) => ({
+    related_products: (relatedResult || []).map((p: any) => ({
       id: p.id,
       name: p.name,
       slug: p.slug,
       base_price: p.base_price,
       compare_at_price: p.compare_at_price,
+      primary_image: p.primary_image,
     })),
   };
 

@@ -27,7 +27,7 @@ type Product = {
   variants: Variant[];
   inStock: boolean;
   reviews: { items: { id: string; reviewer_name: string; rating: number; title: string; body: string; created_at: string }[]; average_rating: number | null; count: number };
-  related_products: { id: string; name: string; slug: string; base_price: number; compare_at_price: number | null }[];
+  related_products: { id: string; name: string; slug: string; base_price: number; compare_at_price: number | null; primary_image: { url: string; alt_text: string | null } | null }[];
 };
 
 function Stars({ rating }: { rating: number }) {
