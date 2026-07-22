@@ -52,6 +52,21 @@ export default function CartPage() {
     setDiscountLoading(false);
   }
 
+  useEffect(() => {
+    if (items.length > 0 && !fetched.current) {
+      fetched.current = true;
+      const productIds = items.map((i) => i.product.id);
+      fetch("/api/products/recommended", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ product_ids: productIds }),
+      })
+        .then((r) => r.json())
+        .then((data) => setRecommended(data.products || []))
+        .catch(() => {});
+    }
+  }, [items]);
+
   const discountAmount = discount?.discount_amount || 0;
   const shipping = subtotal >= 500 ? 0 : 99;
   const total = Math.max(0, subtotal - discountAmount + shipping);
