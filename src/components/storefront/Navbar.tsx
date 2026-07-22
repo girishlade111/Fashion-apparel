@@ -155,27 +155,7 @@ export default function Navbar({ categories }: { categories: Category[] }) {
 
       <div className="h-16" />
 
-      {searchOpen && (
-        <div className="fixed inset-0 z-50 bg-white">
-          <div className="flex items-center justify-between px-6 h-16 border-b border-neutral-200">
-            <input
-              type="text"
-              placeholder="Search products..."
-              className="flex-1 text-lg bg-transparent border-none outline-none text-neutral-900 placeholder:text-neutral-400"
-              autoFocus
-              onKeyDown={(e) => {
-                if (e.key === "Escape") setSearchOpen(false);
-              }}
-            />
-            <button
-              onClick={() => setSearchOpen(false)}
-              className="text-sm text-neutral-500 hover:text-neutral-900"
-            >
-              Close
-            </button>
-          </div>
-        </div>
-      )}
+      <SearchOverlay open={searchOpen} onClose={() => setSearchOpen(false)} />
 
       {mobileOpen && (
         <div className="fixed inset-0 z-50 bg-white lg:hidden">
